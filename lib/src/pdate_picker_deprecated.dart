@@ -265,7 +265,7 @@ class PDayPicker extends StatelessWidget {
             selectedDate.day == day;
         if (isSelectedDay) {
           // The selected day gets a circle background highlight, and a contrasting text color.
-          itemStyle = themeData.accentTextTheme.bodyText1;
+          itemStyle = Theme.of(context).textTheme.bodyMedium;
           decoration = BoxDecoration(
             color: themeData.accentColor,
             shape: BoxShape.circle,
