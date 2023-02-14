@@ -2,31 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-final ThemeData androidTheme = new ThemeData(
+final ThemeData androidTheme = ThemeData(
   fontFamily: 'Dana',
 );
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
       theme: androidTheme,
-      home: new MyHomePage(title: 'دیت تایم پیکر فارسی'),
+      home: const MyHomePage(title: 'دیت تایم پیکر فارسی'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -42,30 +42,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Directionality(
+    return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: new AppBar(
-          title: new Text(
+        appBar: AppBar(
+          title: Text(
             widget.title,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               colors: [Colors.white, Color(0xffE4F5F9)],
             ),
           ),
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            physics: BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            physics: const BouncingScrollPhysics(),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -74,26 +74,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       imageButton(
                         onTap: () async {
-                          Jalali picked = await showPersianDatePicker(
-                              context: context,
-                              initialDate: Jalali.now(),
-                              firstDate: Jalali(1385, 8),
-                              lastDate: Jalali(1450, 9),
-                              initialEntryMode: PDatePickerEntryMode.calendarOnly,
-                              initialDatePickerMode: PDatePickerMode.year,
-                              builder: (condex, child) {
-                                return Theme(
-                                  data: ThemeData(
-                                    dialogTheme: const DialogTheme(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(0)),
+                          Jalali? picked = await showPersianDatePicker(
+                            context: context,
+                            initialDate: Jalali.now(),
+                            firstDate: Jalali(1385, 8),
+                            lastDate: Jalali(1450, 9),
+                            initialEntryMode: PDatePickerEntryMode.calendarOnly,
+                            initialDatePickerMode: PDatePickerMode.year,
+                            builder: (condex, child) {
+                              return Theme(
+                                data: ThemeData(
+                                  dialogTheme: const DialogTheme(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(0),
                                       ),
                                     ),
                                   ),
-                                  child: child,
-                                );
-                              });
+                                ),
+                                child: child ?? const SizedBox(),
+                              );
+                            },
+                          );
                           if (picked != null && picked != selectedDate) {
                             setState(() {
                               label = picked.toJalaliDateTime();
@@ -104,22 +106,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       imageButton(
                         onTap: () async {
-                          Jalali pickedDate =
-                              await showModalBottomSheet<Jalali>(
+                          Jalali? pickedDate = await showModalBottomSheet<Jalali>(
                             context: context,
                             builder: (context) {
-                              Jalali tempPickedDate;
+                              Jalali? tempPickedDate;
                               return Container(
                                 height: 250,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           CupertinoButton(
-                                            child: Text(
+                                            child: const Text(
                                               'لغو',
                                               style: TextStyle(
                                                 fontFamily: 'Dana',
@@ -130,39 +130,34 @@ class _MyHomePageState extends State<MyHomePage> {
                                             },
                                           ),
                                           CupertinoButton(
-                                            child: Text(
+                                            child: const Text(
                                               'تایید',
                                               style: TextStyle(
                                                 fontFamily: 'Dana',
                                               ),
                                             ),
                                             onPressed: () {
-                                              Navigator.of(context).pop(
-                                                  tempPickedDate ??
-                                                      Jalali.now());
+                                              Navigator.of(context).pop(tempPickedDate ?? Jalali.now());
                                             },
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 0,
                                       thickness: 1,
                                     ),
                                     Expanded(
                                       child: Container(
                                         child: CupertinoTheme(
-                                          data: CupertinoThemeData(
+                                          data: const CupertinoThemeData(
                                             textTheme: CupertinoTextThemeData(
-                                              dateTimePickerTextStyle:
-                                                  TextStyle(fontFamily: 'Dana'),
+                                              dateTimePickerTextStyle: TextStyle(fontFamily: 'Dana'),
                                             ),
                                           ),
                                           child: PCupertinoDatePicker(
-                                            mode: PCupertinoDatePickerMode
-                                                .dateAndTime,
-                                            onDateTimeChanged:
-                                                (Jalali dateTime) {
+                                            mode: PCupertinoDatePickerMode.dateAndTime,
+                                            onDateTimeChanged: (Jalali dateTime) {
                                               tempPickedDate = dateTime;
                                             },
                                           ),
@@ -189,42 +184,38 @@ class _MyHomePageState extends State<MyHomePage> {
                             context: context,
                             initialTime: TimeOfDay.now(),
                             initialEntryMode: PTimePickerEntryMode.input,
-                            builder: (BuildContext context, Widget child) {
+                            builder: (BuildContext context, Widget? child) {
                               return Directionality(
                                 textDirection: TextDirection.rtl,
                                 child: MediaQuery(
-                                  data: MediaQuery.of(context)
-                                      .copyWith(alwaysUse24HourFormat: true),
-                                  child: child,
+                                  data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                                  child: child ?? const SizedBox(),
                                 ),
                               );
                             },
                           );
                           setState(() {
-                            if (picked != null)
-                              label = picked.persianFormat(context);
+                            if (picked != null) label = picked.persianFormat(context);
                           });
                         },
                         image: '09',
                       ),
                       imageButton(
                         onTap: () async {
-                          Jalali pickedDate =
-                              await showModalBottomSheet<Jalali>(
+                          Jalali? pickedDate = await showModalBottomSheet<Jalali>(
                             context: context,
                             builder: (context) {
-                              Jalali tempPickedDate;
+                              Jalali? tempPickedDate;
                               return Container(
                                 height: 250,
                                 child: Column(
                                   children: <Widget>[
                                     Container(
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           CupertinoButton(
-                                            child: Text(
+                                            child: const Text(
                                               'لغو',
                                               style: TextStyle(
                                                 fontFamily: 'Dana',
@@ -235,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             },
                                           ),
                                           CupertinoButton(
-                                            child: Text(
+                                            child: const Text(
                                               'تایید',
                                               style: TextStyle(
                                                 fontFamily: 'Dana',
@@ -244,30 +235,27 @@ class _MyHomePageState extends State<MyHomePage> {
                                             onPressed: () {
                                               print(tempPickedDate);
 
-                                              Navigator.of(context)
-                                                  .pop(tempPickedDate);
+                                              Navigator.of(context).pop(tempPickedDate);
                                             },
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       height: 0,
                                       thickness: 1,
                                     ),
                                     Expanded(
                                       child: Container(
                                         child: CupertinoTheme(
-                                          data: CupertinoThemeData(
+                                          data: const CupertinoThemeData(
                                             textTheme: CupertinoTextThemeData(
-                                              dateTimePickerTextStyle:
-                                                  TextStyle(fontFamily: 'Dana'),
+                                              dateTimePickerTextStyle: TextStyle(fontFamily: 'Dana'),
                                             ),
                                           ),
                                           child: PCupertinoDatePicker(
                                             mode: PCupertinoDatePickerMode.time,
-                                            onDateTimeChanged:
-                                                (Jalali dateTime) {
+                                            onDateTimeChanged: (Jalali dateTime) {
                                               tempPickedDate = dateTime;
                                             },
                                           ),
@@ -282,7 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           if (pickedDate != null) {
                             setState(() {
-                              label = '${pickedDate.toJalaliDateTime()}';
+                              label = pickedDate.toJalaliDateTime();
                             });
                           }
                         },
@@ -306,8 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             lastDate: Jalali(1450, 9),
                           );
                           setState(() {
-                            label =
-                                "${picked?.start?.toJalaliDateTime() ?? ""} ${picked?.end?.toJalaliDateTime() ?? ""}";
+                            label = "${picked?.start.toJalaliDateTime() ?? ""} ${picked?.end.toJalaliDateTime() ?? ""}";
                           });
                         },
                         image: '03',
@@ -317,16 +304,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           var picked = await showPersianTimePicker(
                             context: context,
                             initialTime: TimeOfDay.now(),
-                            builder: (BuildContext context, Widget child) {
+                            builder: (BuildContext context, Widget? child) {
                               return Directionality(
                                 textDirection: TextDirection.rtl,
-                                child: child,
+                                child: child ?? const SizedBox(),
                               );
                             },
                           );
                           setState(() {
-                            if (picked != null)
-                              label = picked.persianFormat(context);
+                            if (picked != null) label = picked.persianFormat(context);
                           });
                         },
                         image: '04',
@@ -344,8 +330,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             lastDate: Jalali(1450, 9),
                           );
                           setState(() {
-                            label =
-                                "${picked?.start?.toJalaliDateTime() ?? ""} ${picked?.end?.toJalaliDateTime() ?? ""}";
+                            label = "${picked?.start.toJalaliDateTime() ?? ""} ${picked?.end.toJalaliDateTime() ?? ""}";
                           });
                         },
                         image: '06',
@@ -360,22 +345,19 @@ class _MyHomePageState extends State<MyHomePage> {
         bottomNavigationBar: Container(
           height: 70,
           width: double.infinity,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 3,
               spreadRadius: 0,
-              offset: Offset(0, 4),
-              color: Color(0xff000000).withOpacity(0.3),
+              offset: const Offset(0, 4),
+              color: const Color(0xff000000).withOpacity(0.3),
             ),
           ], color: Colors.white),
           child: Center(
             child: Text(
               label,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  .copyWith(color: Colors.black),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
           ),
@@ -385,24 +367,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget imageButton({
-    Function onTap,
-    String image,
+    required void Function() onTap,
+    required String image,
   }) {
     return ScaleGesture(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
               BoxShadow(
                 blurRadius: 3,
                 spreadRadius: 0,
-                offset: Offset(0, 4),
-                color: Color(0xff000000).withOpacity(0.3),
+                offset: const Offset(0, 4),
+                color: const Color(0xff000000).withOpacity(0.3),
               ),
             ],
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+            borderRadius: const BorderRadius.all(Radius.circular(10))),
         child: Image.asset(
           'assets/images/$image.png',
           fit: BoxFit.fitWidth,
@@ -418,16 +400,16 @@ class ScaleGesture extends StatefulWidget {
   final VoidCallback onTap;
 
   ScaleGesture({
-    this.child,
+    required this.child,
     this.scale = 1.1,
-    this.onTap,
+    required this.onTap,
   });
   @override
   _ScaleGestureState createState() => _ScaleGestureState();
 }
 
 class _ScaleGestureState extends State<ScaleGesture> {
-  double scale;
+  late double scale;
 
   @override
   void initState() {
@@ -452,7 +434,7 @@ class _ScaleGestureState extends State<ScaleGesture> {
         setState(() {
           scale = 1;
         });
-        widget?.onTap();
+        widget.onTap();
       },
       child: Transform.scale(
         scale: scale,
@@ -461,4 +443,3 @@ class _ScaleGestureState extends State<ScaleGesture> {
     );
   }
 }
-
