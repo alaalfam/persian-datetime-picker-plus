@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:persian_datetime_picker_plus/persian_datetime_picker.dart';
 
 
 class StringsText {

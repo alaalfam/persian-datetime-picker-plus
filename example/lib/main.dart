@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:persian_datetime_picker_plus/persian_datetime_picker.dart';
 
 final ThemeData androidTheme = ThemeData(
   fontFamily: 'Dana',
